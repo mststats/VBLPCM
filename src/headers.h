@@ -61,8 +61,8 @@ typedef struct
   int *conv;
   }Rf_params;  
 
-int flag;
-Rf_params *params;
+extern int flag;
+extern Rf_params *params;
 
 #define eps 1.0e-6
 
