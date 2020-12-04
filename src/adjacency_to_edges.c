@@ -2,7 +2,7 @@
 #include <R.h>
 #include "headers.h"  
 
-void Y_to_E (int *N, int *directed, double *Y, int *E)
+void c_Y_to_E (int *N, int *directed, double *Y, int *E)
   {
   int j1, j2, i=0, s;
   for (j1=0;j1<*N;j1++)
@@ -19,7 +19,7 @@ void Y_to_E (int *N, int *directed, double *Y, int *E)
   return;
   }
 
-void Y_to_nonE (int *N, int *directed, double *Y, int *nonE)
+void c_Y_to_nonE (int *N, int *directed, double *Y, int *nonE)
   {
   int j1, j2, i=0, s;
   for (j1=0;j1<*N;j1++)
@@ -36,7 +36,7 @@ void Y_to_nonE (int *N, int *directed, double *Y, int *nonE)
   return;
   }
 
-void Y_to_M (int *N, int *directed, double *Y, int *M)
+void c_Y_to_M (int *N, int *directed, double *Y, int *M)
   {
   int j1, j2, i=0, s;
   for (j1=0;j1<*N;j1++)
@@ -52,7 +52,7 @@ void Y_to_M (int *N, int *directed, double *Y, int *M)
     }
   return;
   }
-void E_to_Y (int *N, int *NE, int *directed, int *E, double *Y)
+void c_E_to_Y (int *N, int *NE, int *directed, int *E, double *Y)
   {
   int i;
   for (i=0;i<*NE;i++)

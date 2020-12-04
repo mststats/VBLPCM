@@ -52,7 +52,7 @@ vblpcmfit<-function(variational.start, STEPS=50, maxiter=100, tol=1e-6, NC=NULL,
   inv_sigma02<-variational.start$inv_sigma02
   imodel=switch(model, plain=0, rsender=1, rreceiver=2, rsocial=3)
   conv=0 # not converged to start with
-  out<-.C("Rf_VB_bbs", NAOK=TRUE, imodel=as.integer(imodel), steps=as.integer(STEPS), max_iter=as.integer(maxiter), P_n=as.integer(P_n), 
+  out<-.C("c_Rf_VB_bbs", NAOK=TRUE, imodel=as.integer(imodel), steps=as.integer(STEPS), max_iter=as.integer(maxiter), P_n=as.integer(P_n), 
            P_e=as.integer(P_e), D=as.integer(d), N=as.integer(N), NE=as.integer(NE), NnonE=as.integer(NnonE), NM=as.integer(NM),
            G=as.integer(G), Y=as.numeric(t(Y)), E=as.integer(t(E)), nonE=as.integer(t(nonE)), M=as.integer(t(M)),
   	   numedges=as.integer(t(numedges)), EnonE=as.integer(t(EnonE)), diam=as.integer(diam),
@@ -64,8 +64,7 @@ vblpcmfit<-function(variational.start, STEPS=50, maxiter=100, tol=1e-6, NC=NULL,
            xi=as.double(xi), psi2=as.double(psi2), sigma02=as.double(sigma02),
            omega2=as.double(omega2), nu=as.double(nu), alpha=as.double(alpha),
            inv_sigma02=as.double(inv_sigma02), tol=as.double(tol), NC=as.integer(NC), 
-	   seed=as.double(seed), d_vector=as.double(d_vector), conv=as.integer(conv),
-	   PACKAGE="VBLPCM")
+	   seed=as.double(seed), d_vector=as.double(d_vector), conv=as.integer(conv))
   if (model=="plain") 
     V_xi_n<-NaN
   if (model!="plain") 
