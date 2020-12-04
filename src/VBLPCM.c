@@ -2,7 +2,9 @@
 #include <string.h>
 #include <math.h>
 #include <gsl/gsl_sf.h>
+#define extern
 #include "headers.h"
+#undef extern
 #include <R_ext/Utils.h>
 #include <R_ext/Print.h>
 
@@ -72,7 +74,8 @@ void Rf_VB_bbs(int *imodel,
   int i, j, d, g, p, l, g1;
   double tmp, tmpsum1, tmpsum2;
   double mu_nought = 0.0;
-  params=calloc(1,sizeof(Rf_params));
+  struct Rf_params *params;
+  params=calloc(1,sizeof(struct Rf_params));
   params->MAX_ITER=max_iter;
   params->P_n=P_n;
   params->P_e=P_e;

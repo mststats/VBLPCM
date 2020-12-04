@@ -10,7 +10,7 @@
 
 #define SUBSET N // for KL_funcs
 
-typedef struct 
+struct Rf_params
 {
   int *MAX_ITER;
   int *p;
@@ -59,10 +59,10 @@ typedef struct
   int *NC;
   double *seed;
   int *conv;
-  }Rf_params;  
+  };
 
 extern int flag;
-extern Rf_params *params;
+extern struct Rf_params *params;
 
 #define eps 1.0e-6
 

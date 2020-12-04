@@ -802,50 +802,51 @@ void KL_total (int *imodel,
 { 
   int p, i, g, d, flag=0;
   double tmp;
-  params=calloc(1,sizeof(Rf_params));
-  params->seed=seed;
-  params->p=&p;
-  params->i=&i;
-  params->g=&g;
-  params->d=&d;
-  params->flag=&flag;
-  params->P_n=P_n;
-  params->P_e=P_e;
-  params->D=D;
-  params->N=N;
-  params->NE=NE;
-  params->NM=NM;
-  params->NnonE=NnonE;
-  params->G=G;
-  params->Y=Y;
-  params->E=E; // edges matrix. NE X 2
-  params->nonE=nonE; // non-edges matrix. NM X 2
-  params->M=M; // missing-edges matrix. NM X 2
-  params->numedges=numedges;
-  params->EnonE=EnonE;
-  params->diam=diam; 
-  params->hopslist=hopslist; 
-  params->XX_e=XX_e; // design matrix for edge covariates. 
-  params->V_xi_n=V_xi_n;
-  params->V_xi_e=V_xi_e;
-  params->V_psi2_n=V_psi2_n;
-  params->V_psi2_e=V_psi2_e;
-  params->V_z=V_z;
-  params->V_sigma2=V_sigma2;
-  params->V_eta=V_eta;
-  params->V_lambda=V_lambda;
-  params->V_omega2=V_omega2;
-  params->V_nu=V_nu;
-  params->V_alpha=V_alpha;
-  params->xi=xi;
-  params->psi2=psi2;
-  params->sigma2=sigma2;
-  params->omega2=omega2;
-  params->nu=nu;
-  params->alpha=alpha;
-  params->inv_sigma02=inv_sigma02;
-  params->NC=NC;
-  params->imodel=imodel;
+  struct Rf_params *tmp_params;
+  tmp_params=calloc(1,sizeof(struct Rf_params));
+  tmp_params->seed=seed;
+  tmp_params->p=&p;
+  tmp_params->i=&i;
+  tmp_params->g=&g;
+  tmp_params->d=&d;
+  tmp_params->flag=&flag;
+  tmp_params->P_n=P_n;
+  tmp_params->P_e=P_e;
+  tmp_params->D=D;
+  tmp_params->N=N;
+  tmp_params->NE=NE;
+  tmp_params->NM=NM;
+  tmp_params->NnonE=NnonE;
+  tmp_params->G=G;
+  tmp_params->Y=Y;
+  tmp_params->E=E; // edges matrix. NE X 2
+  tmp_params->nonE=nonE; // non-edges matrix. NM X 2
+  tmp_params->M=M; // missing-edges matrix. NM X 2
+  tmp_params->numedges=numedges;
+  tmp_params->EnonE=EnonE;
+  tmp_params->diam=diam; 
+  tmp_params->hopslist=hopslist; 
+  tmp_params->XX_e=XX_e; // design matrix for edge covariates. 
+  tmp_params->V_xi_n=V_xi_n;
+  tmp_params->V_xi_e=V_xi_e;
+  tmp_params->V_psi2_n=V_psi2_n;
+  tmp_params->V_psi2_e=V_psi2_e;
+  tmp_params->V_z=V_z;
+  tmp_params->V_sigma2=V_sigma2;
+  tmp_params->V_eta=V_eta;
+  tmp_params->V_lambda=V_lambda;
+  tmp_params->V_omega2=V_omega2;
+  tmp_params->V_nu=V_nu;
+  tmp_params->V_alpha=V_alpha;
+  tmp_params->xi=xi;
+  tmp_params->psi2=psi2;
+  tmp_params->sigma2=sigma2;
+  tmp_params->omega2=omega2;
+  tmp_params->nu=nu;
+  tmp_params->alpha=alpha;
+  tmp_params->inv_sigma02=inv_sigma02;
+  tmp_params->NC=NC;
+  tmp_params->imodel=imodel;
   flag=0;
   // p1
   *KL = loglikefunc(); 
@@ -857,7 +858,7 @@ void KL_total (int *imodel,
       for (d=0; d<*D; d++)
         tmp += pow(V_z[i* *D+d] - V_eta[g * *D + d], 2.0);
       tmp = GSQRT(tmp + V_sigma2[i] + V_omega2[g]);
-      *KL += V_lambda[g* *N+i]*(*D * gsl_sf_psi (0.5 * *inv_sigma02 *V_alpha[g])- 0.5 * *inv_sigma02 * params->V_alpha[g] * tmp);
+      *KL += V_lambda[g* *N+i]*(*D * gsl_sf_psi (0.5 * *inv_sigma02 *V_alpha[g])- 0.5 * *inv_sigma02 * tmp_params->V_alpha[g] * tmp);
       }
   // p3
   tmp=0;
@@ -903,7 +904,6 @@ void KL_total (int *imodel,
   for (g=0;g<*G;g++)
     *KL += lgamma(0.5*V_alpha[g])-lgamma(0.5*alpha[g]) + 0.5*(alpha[g]-V_alpha[g])*(gsl_sf_psi(0.5*V_alpha[g]));
   //*KL = -*KL;
-  free(params);
   return;
 }
 
