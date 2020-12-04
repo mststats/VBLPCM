@@ -24,7 +24,7 @@ double diff_mean(double *vec1, double *vec2, int n) // compute largest absolute 
   return diff/n;
   }
 
-void c_Rf_VB_bbs(int *imodel,
+void Rf_VB_bbs(int *imodel,
   int *steps,
   int *max_iter,
   int *P_n,

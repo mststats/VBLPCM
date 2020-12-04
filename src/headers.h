@@ -69,13 +69,13 @@ Rf_params *params;
 void bb(double *lim, double *tol); // in bb.c
 void sample_permutation(int N, int *samp, double *seed); // in funcs.c
 double loglikefunc(); // in likelihoods.c
-void c_Y_to_E (int *N, int *directed, double *Y, int *E);
-void c_Y_to_nonE (int *N, int *directed, double *Y, int *nonE);
-void c_Y_to_M (int *N, int *directed, double *Y, int *M);
-void c_E_to_Y (int *N, int *NE, int *directed, int *E, double *Y);
-void c_fruchterman_reingold(int *directed, int *N, int *D, int *steps, double *Y, double *X, double *repulserad, double *m, double *volume);
-void c_log_like_forces(int *directed, int *N, int *D, int *steps, double *Y, double *X, double *B, double *m);
-void c_KL_total (int *imodel,
+void Y_to_E (int *N, int *directed, double *Y, int *E);
+void Y_to_nonE (int *N, int *directed, double *Y, int *nonE);
+void Y_to_M (int *N, int *directed, double *Y, int *M);
+void E_to_Y (int *N, int *NE, int *directed, int *E, double *Y);
+void fruchterman_reingold(int *directed, int *N, int *D, int *steps, double *Y, double *X, double *repulserad, double *m, double *volume);
+void log_like_forces(int *directed, int *N, int *D, int *steps, double *Y, double *X, double *B, double *m);
+void KL_total (int *imodel,
   int *P_n,
   int *P_e,
   int *D,
@@ -115,7 +115,7 @@ void c_KL_total (int *imodel,
   int *NC,
   double *KL);
 
-void c_Rf_VB_bbs(int *imodel,
+void Rf_VB_bbs(int *imodel,
   int *steps,
   int *max_iter,
   int *P_n,

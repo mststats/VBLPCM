@@ -9,14 +9,14 @@
 #include <R_ext/Visibility.h>
 
 static const R_CMethodDef CEntries[] = {
-    {"c_Rf_VB_bbs", (DL_FUNC) &c_Rf_VB_bbs, 43},
-    {"c_Y_to_E", (DL_FUNC) &c_Y_to_E, 4},
-    {"c_Y_to_nonE", (DL_FUNC) &c_Y_to_nonE, 4},
-    {"c_Y_to_M", (DL_FUNC) &c_Y_to_M, 4},
-    {"c_E_to_Y", (DL_FUNC) &c_E_to_Y, 5},
-    {"c_KL_total", (DL_FUNC) &c_KL_total, 39},
-    {"c_fruchterman_reingold", (DL_FUNC) &c_fruchterman_reingold, 9},
-    {"c_log_like_forces", (DL_FUNC) &c_log_like_forces, 8},
+    {"Rf_VB_bbs", (DL_FUNC) &Rf_VB_bbs, 43},
+    {"Y_to_E", (DL_FUNC) &Y_to_E, 4},
+    {"Y_to_nonE", (DL_FUNC) &Y_to_nonE, 4},
+    {"Y_to_M", (DL_FUNC) &Y_to_M, 4},
+    {"E_to_Y", (DL_FUNC) &E_to_Y, 5},
+    {"KL_total", (DL_FUNC) &KL_total, 39},
+    {"fruchterman_reingold", (DL_FUNC) &fruchterman_reingold, 9},
+    {"log_like_forces", (DL_FUNC) &log_like_forces, 8},
     {NULL, NULL, 0}
 };
 

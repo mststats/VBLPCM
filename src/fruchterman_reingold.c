@@ -3,7 +3,7 @@
 #include "headers.h"
 #define MATRIX(x,j,k) x[*D*(j)+(k)]
 
-void c_fruchterman_reingold(int *directed, int *N, int *D, int *steps, double *Y, double *X, 
+void fruchterman_reingold(int *directed, int *N, int *D, int *steps, double *Y, double *X, 
                           double *repulserad, double *m, double *volume){
   double *dxdy=calloc(*N* *D, sizeof(double)); // position change vector
   double xd[*D], ded, af, rf, f;

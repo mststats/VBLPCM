@@ -760,7 +760,7 @@ void gr_KL_V_psi2_n (const gsl_vector *v_V_psi2_n, void * null, gsl_vector *df)
        gr_KL_V_psi2_n(x, NULL, df);
        return;
      }
-void c_KL_total (int *imodel,
+void KL_total (int *imodel,
   int *P_n,
   int *P_e,
   int *D,
