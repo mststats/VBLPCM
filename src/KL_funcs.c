@@ -1,5 +1,6 @@
 #include <math.h>
 #include <gsl/gsl_sf.h>
+#include "globals.h"
 #include "headers.h"
 
 double
@@ -800,7 +801,7 @@ void KL_total (int *imodel,
   int *NC,
   double *KL)
 { 
-  int p, i, g, d, flag=0;
+  int p, i, g, d, *flag=0;
   double tmp;
   struct Rf_params *tmp_params;
   tmp_params=calloc(1,sizeof(struct Rf_params));
@@ -809,7 +810,7 @@ void KL_total (int *imodel,
   tmp_params->i=&i;
   tmp_params->g=&g;
   tmp_params->d=&d;
-  tmp_params->flag=&flag;
+  tmp_params->flag=flag;
   tmp_params->P_n=P_n;
   tmp_params->P_e=P_e;
   tmp_params->D=D;
@@ -847,7 +848,7 @@ void KL_total (int *imodel,
   tmp_params->inv_sigma02=inv_sigma02;
   tmp_params->NC=NC;
   tmp_params->imodel=imodel;
-  flag=0;
+  *flag=0;
   // p1
   *KL = loglikefunc(); 
   // p2

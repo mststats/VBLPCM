@@ -1,5 +1,6 @@
 #include <math.h>
 #include <R.h>
+#include "globals.h"
 #include "headers.h"
 #define MATRIX(x,j,k) x[*D*(j)+(k)]
 #define damp 1.0e0

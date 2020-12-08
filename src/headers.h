@@ -61,9 +61,6 @@ struct Rf_params
   int *conv;
   };
 
-extern int flag;
-extern struct Rf_params *params;
-
 #define eps 1.0e-6
 
 void bb(double *lim, double *tol); // in bb.c

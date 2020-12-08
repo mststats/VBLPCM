@@ -1,5 +1,6 @@
 #include <math.h>
 #include <R.h>
+#include "globals.h"  
 #include "headers.h"  
 
 void Y_to_E (int *N, int *directed, double *Y, int *E)

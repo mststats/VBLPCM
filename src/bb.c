@@ -1,5 +1,6 @@
 #include <R.h>
 #include <gsl/gsl_vector.h>
+#include "globals.h"
 #include "headers.h"
 
 void gr_KL_V_xi_n(const gsl_vector *V_xi_n, void *null, gsl_vector *df);

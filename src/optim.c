@@ -3,6 +3,7 @@
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_math.h>
 #include "gsl/gsl_multimin.h"
+#include "globals.h"
 #include "headers.h"
 
 double KL_V_xi_n(const gsl_vector *V_xi_n, void *null);
@@ -41,13 +42,13 @@ void optim()
   gsl_multimin_function_fdf F;
   max_iter=params->MAX_ITER;
   gsl_vector *x;
-  int flag = *params->flag, SIZE;
+  int *flag = *params->flag, SIZE;
   double *tmp, sum_tmp;
-  SIZE=(flag==1 ? *params->D : 1);
+  SIZE=(*flag==1 ? *params->D : 1);
   x = gsl_vector_alloc (SIZE);
   tmp=calloc(SIZE, sizeof(double));
   F.n = SIZE;
-  switch (flag)
+  switch (*flag)
     {
     case 0: gsl_vector_set(x, 0, params->V_xi_n[*params->i+*params->N* *params->p]);
       F.f = &KL_V_xi_n;
@@ -115,7 +116,7 @@ void optim()
       status = gsl_multimin_test_gradient (s->gradient, 1.0e-4); 
   }
   while (status == GSL_CONTINUE && iter < *max_iter);
-  switch (flag)
+  switch (*flag)
     {
     case 0: params->V_xi_n[*params->i+*params->N* *params->p] = gsl_vector_get (s->x, 0); 
       break;

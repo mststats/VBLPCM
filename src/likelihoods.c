@@ -1,3 +1,4 @@
+#include "globals.h"
 #include "headers.h"
 #include <math.h>
 
