@@ -3,36 +3,35 @@
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_math.h>
 #include "gsl/gsl_multimin.h"
-#include "globals.h"
 #include "headers.h"
 
-double KL_V_xi_n(const gsl_vector *V_xi_n, void *null);
-double KL_V_xi_e(const gsl_vector *V_xi_e, void *null);
-double KL_V_z_i(const gsl_vector *V_z_i, void *null);
-double KL_V_sigma2_i(const gsl_vector *log_V_sigma2_i, void *null);
-double KL_V_alpha_g(const gsl_vector *log_V_alpha_g, void *null);
-double KL_V_nu_g(const gsl_vector *log_V_nu_g, void *null);
-double KL_V_psi2_n(const gsl_vector *log_V_psi2_n, void *null);
-double KL_V_psi2_e(const gsl_vector *log_V_psi2_e, void *null);
-void gr_KL_V_xi_n(const gsl_vector *V_xi_n, void *null, gsl_vector *df);
-void gr_KL_V_xi_e(const gsl_vector *V_xi_e, void *null, gsl_vector *df);
-void gr_KL_V_z_i(const gsl_vector *V_z_i, void *null, gsl_vector *df);
-void gr_KL_V_sigma2_i(const gsl_vector *V_sigma2_i, void *null, gsl_vector *df);
-void gr_KL_V_alpha_g(const gsl_vector *V_alpha_g, void *null, gsl_vector *df);
-void gr_KL_V_nu_g(const gsl_vector *V_nu_g, void *null, gsl_vector *df);
-void gr_KL_V_psi2_n(const gsl_vector *V_psi2_n, void *null, gsl_vector *df);
-void gr_KL_V_psi2_e(const gsl_vector *V_psi2_e, void *null, gsl_vector *df);
-void xi_n_fdf(const gsl_vector *V_xi_n, void *null, double *f, gsl_vector *df);
-void xi_e_fdf(const gsl_vector *V_xi_e, void *null, double *f, gsl_vector *df);
-void z_i_fdf(const gsl_vector *V_z_i, void *null, double *f, gsl_vector *df);
-void sigma2_i_fdf(const gsl_vector *log_V_sigma2_i, void *null, double *f, gsl_vector *df);
-void alpha_g_fdf(const gsl_vector *log_V_alpha_g, void *null, double *f, gsl_vector *df);
-void nu_g_fdf(const gsl_vector *log_V_nu_g, void *null, double *f, gsl_vector *df);
-void psi2_n_fdf(const gsl_vector *log_V_psi2_n, void *null, double *f, gsl_vector *df);
-void psi2_e_fdf(const gsl_vector *log_V_psi2_e, void *null, double *f, gsl_vector *df);
+double KL_V_xi_n(const gsl_vector *V_xi_n, void *null, Rf_params *params);
+double KL_V_xi_e(const gsl_vector *V_xi_e, void *null, Rf_params *params);
+double KL_V_z_i(const gsl_vector *V_z_i, void *null, Rf_params *params);
+double KL_V_sigma2_i(const gsl_vector *log_V_sigma2_i, void *null, Rf_params *params);
+double KL_V_alpha_g(const gsl_vector *log_V_alpha_g, void *null, Rf_params *params);
+double KL_V_nu_g(const gsl_vector *log_V_nu_g, void *null, Rf_params *params);
+double KL_V_psi2_n(const gsl_vector *log_V_psi2_n, void *null, Rf_params *params);
+double KL_V_psi2_e(const gsl_vector *log_V_psi2_e, void *null, Rf_params *params);
+void gr_KL_V_xi_n(const gsl_vector *V_xi_n, void *null, gsl_vector *df, Rf_params *params);
+void gr_KL_V_xi_e(const gsl_vector *V_xi_e, void *null, gsl_vector *df, Rf_params *params);
+void gr_KL_V_z_i(const gsl_vector *V_z_i, void *null, gsl_vector *df, Rf_params *params);
+void gr_KL_V_sigma2_i(const gsl_vector *V_sigma2_i, void *null, gsl_vector *df, Rf_params *params);
+void gr_KL_V_alpha_g(const gsl_vector *V_alpha_g, void *null, gsl_vector *df, Rf_params *params);
+void gr_KL_V_nu_g(const gsl_vector *V_nu_g, void *null, gsl_vector *df, Rf_params *params);
+void gr_KL_V_psi2_n(const gsl_vector *V_psi2_n, void *null, gsl_vector *df, Rf_params *params);
+void gr_KL_V_psi2_e(const gsl_vector *V_psi2_e, void *null, gsl_vector *df, Rf_params *params);
+void xi_n_fdf(const gsl_vector *V_xi_n, void *null, double *f, gsl_vector *df, Rf_params *params);
+void xi_e_fdf(const gsl_vector *V_xi_e, void *null, double *f, gsl_vector *df, Rf_params *params);
+void z_i_fdf(const gsl_vector *V_z_i, void *null, double *f, gsl_vector *df, Rf_params *params);
+void sigma2_i_fdf(const gsl_vector *log_V_sigma2_i, void *null, double *f, gsl_vector *df, Rf_params *params);
+void alpha_g_fdf(const gsl_vector *log_V_alpha_g, void *null, double *f, gsl_vector *df, Rf_params *params);
+void nu_g_fdf(const gsl_vector *log_V_nu_g, void *null, double *f, gsl_vector *df, Rf_params *params);
+void psi2_n_fdf(const gsl_vector *log_V_psi2_n, void *null, double *f, gsl_vector *df, Rf_params *params);
+void psi2_e_fdf(const gsl_vector *log_V_psi2_e, void *null, double *f, gsl_vector *df, Rf_params *params);
 
 
-void optim()
+void optim(Rf_params *params)
 {
   int dd, status;
   size_t iter = 0;

@@ -10,7 +10,7 @@
 
 #define SUBSET N // for KL_funcs
 
-struct Rf_params
+typedef struct 
 {
   int *MAX_ITER;
   int *p;
@@ -59,19 +59,19 @@ struct Rf_params
   int *NC;
   double *seed;
   int *conv;
-  };
+  }Rf_params;
 
 #define eps 1.0e-6
 
-void bb(double *lim, double *tol); // in bb.c
+void bb(double *lim, double *tol, Rf_params *params); // in bb.c
 void sample_permutation(int N, int *samp, double *seed); // in funcs.c
-double loglikefunc(); // in likelihoods.c
+double loglikefunc(Rf_params *params); // in likelihoods.c
 void Y_to_E (int *N, int *directed, double *Y, int *E);
 void Y_to_nonE (int *N, int *directed, double *Y, int *nonE);
 void Y_to_M (int *N, int *directed, double *Y, int *M);
 void E_to_Y (int *N, int *NE, int *directed, int *E, double *Y);
 void fruchterman_reingold(int *directed, int *N, int *D, int *steps, double *Y, double *X, double *repulserad, double *m, double *volume);
-void log_like_forces(int *directed, int *N, int *D, int *steps, double *Y, double *X, double *B, double *m);
+void log_like_forces(int *directed, int *N, int *D, int *steps, double *Y, double *X, double *B, double *m, Rf_params *params);
 void KL_total (int *imodel,
   int *P_n,
   int *P_e,

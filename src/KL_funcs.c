@@ -1,15 +1,14 @@
 #include <math.h>
 #include <gsl/gsl_sf.h>
-#include "globals.h"
 #include "headers.h"
 
 double
-KL_V_xi_e (const gsl_vector *v_V_xi_e)
+KL_V_xi_e (const gsl_vector *v_V_xi_e, Rf_params *params)
 {
   params->V_xi_e[*params->p] = gsl_vector_get(v_V_xi_e, 0);
   double tmpsum = 0.0, tmp;
   double KL;
-  tmpsum = loglikefunc();
+  tmpsum = loglikefunc(params);
   tmp = -pow (params->V_xi_e[*params->p] - *params->xi, 2.0);
   KL = fabs (tmpsum + 0.5*(tmp) / *params->psi2);
   //KL = fabs (tmpsum + (tmp) / *params->psi2);
@@ -17,20 +16,20 @@ KL_V_xi_e (const gsl_vector *v_V_xi_e)
 }
 
 double
-KL_V_xi_n (const gsl_vector *v_V_xi_n)
+KL_V_xi_n (const gsl_vector *v_V_xi_n, Rf_params *params)
 {
   int P_n=*params->P_n;
   params->V_xi_n[*params->i* P_n+*params->p] = gsl_vector_get(v_V_xi_n, 0);
   double tmpsum = 0.0, tmp;
   double KL;
-  tmpsum = loglikefunc();
+  tmpsum = loglikefunc(params);
   tmp = -pow (params->V_xi_n[*params->i + *params->N* *params->p] - *params->xi, 2.0);
   KL = fabs (tmpsum + 0.5*(tmp) / *params->psi2);
   //KL = fabs (tmpsum + (tmp) / *params->psi2);
   return KL;
 }
 
-void gr_KL_V_xi_e (const gsl_vector *v_V_xi_e, void *null, gsl_vector *df)
+void gr_KL_V_xi_e (const gsl_vector *v_V_xi_e, void *null, gsl_vector *df, Rf_params *params)
 {
   int i, j, p=*params->p, pn;
   int P_e=*params->P_e, P_n=*params->P_n;
@@ -78,7 +77,7 @@ void gr_KL_V_xi_e (const gsl_vector *v_V_xi_e, void *null, gsl_vector *df)
   gsl_vector_set(df, 0, -KL);
   return;
 }
-void gr_KL_V_xi_n (const gsl_vector *v_V_xi_n, void *null, gsl_vector *df)
+void gr_KL_V_xi_n (const gsl_vector *v_V_xi_n, void *null, gsl_vector *df, Rf_params *params)
 {
   int i=*params->i, p=*params->p, P_e=*params->P_e, j, pe;
   int N = *params->N;
@@ -182,22 +181,22 @@ void gr_KL_V_xi_n (const gsl_vector *v_V_xi_n, void *null, gsl_vector *df)
 }
  void
      xi_e_fdf (const gsl_vector *x, 
-             void *null, double *f, gsl_vector *df)
+             void *null, double *f, gsl_vector *df, Rf_params *params)
      {
-       *f = KL_V_xi_e(x);
-       gr_KL_V_xi_e(x, NULL, df);
+       *f = KL_V_xi_e(x, params);
+       gr_KL_V_xi_e(x, NULL, df, params);
        return;
      }
 void
      xi_n_fdf (const gsl_vector *x, 
-             void *null, double *f, gsl_vector *df)
+             void *null, double *f, gsl_vector *df, Rf_params *params)
      {
-       *f = KL_V_xi_n(x);
-       gr_KL_V_xi_n(x, NULL, df);
+       *f = KL_V_xi_n(x, params);
+       gr_KL_V_xi_n(x, NULL, df, params);
        return;
      }
 
-double KL_V_z_i (const gsl_vector *v_V_z_i)
+double KL_V_z_i (const gsl_vector *v_V_z_i, Rf_params *params)
 {
   int i = *params->i, d = *params->d;
   int D = *params->D;	
@@ -207,7 +206,7 @@ double KL_V_z_i (const gsl_vector *v_V_z_i)
   double KL;
   for (d=0; d<D; d++)
     params->V_z[i*D+d] = gsl_vector_get(v_V_z_i, d);
-  tmpsum = loglikefunc();
+  tmpsum = loglikefunc(params);
   KL = tmpsum;
   tmpsum = 0;
   for (g = 0; g < *params->G; g++)
@@ -225,7 +224,7 @@ double KL_V_z_i (const gsl_vector *v_V_z_i)
   return KL;
 }
 
-void gr_KL_V_z_i (const gsl_vector *v_V_z_i, void *null, gsl_vector *df)
+void gr_KL_V_z_i (const gsl_vector *v_V_z_i, void *null, gsl_vector *df, Rf_params *params)
 {
   int i = *params->i, j, k, d;
   int D = *params->D;     
@@ -343,15 +342,15 @@ void gr_KL_V_z_i (const gsl_vector *v_V_z_i, void *null, gsl_vector *df)
 
  void
      z_i_fdf (const gsl_vector *x, 
-             void *null, double *f, gsl_vector *df)
+             void *null, double *f, gsl_vector *df, Rf_params *params)
      {
-       *f = KL_V_z_i(x);
-       gr_KL_V_z_i(x, NULL, df);
+       *f = KL_V_z_i(x, params);
+       gr_KL_V_z_i(x, NULL, df, params);
        return;
      }
 
 double
-KL_V_sigma2_i (const gsl_vector *v_V_sigma2_i)
+KL_V_sigma2_i (const gsl_vector *v_V_sigma2_i, Rf_params *params)
 {
   int i = *params->i, j;
   int D = *params->D;	
@@ -360,7 +359,7 @@ KL_V_sigma2_i (const gsl_vector *v_V_sigma2_i)
   double KL;
   int N = *params->N;
   params->V_sigma2[*params->i] = gsl_vector_get(v_V_sigma2_i, 0);
-  tmpsum = loglikefunc();
+  tmpsum = loglikefunc(params);
   double tmpsum1 = 0.0;
   for (g = 0; g < G; g++)
     tmpsum1 =
@@ -376,7 +375,7 @@ KL_V_sigma2_i (const gsl_vector *v_V_sigma2_i)
   return KL;
 }
 
-void gr_KL_V_sigma2_i (const gsl_vector *v_V_sigma2_i, void *null, gsl_vector *df)
+void gr_KL_V_sigma2_i (const gsl_vector *v_V_sigma2_i, void *null, gsl_vector *df, Rf_params *params)
 {
   int i = *params->i, j, k, d = *params->d;
   int D = *params->D;     
@@ -477,16 +476,16 @@ void gr_KL_V_sigma2_i (const gsl_vector *v_V_sigma2_i, void *null, gsl_vector *d
 
  void
      sigma2_i_fdf (const gsl_vector *x, 
-             void *null, double *f, gsl_vector *df)
+             void *null, double *f, gsl_vector *df, Rf_params *params)
      {
-       *f = KL_V_sigma2_i(x);
-       gr_KL_V_sigma2_i(x, NULL, df);
+       *f = KL_V_sigma2_i(x, params);
+       gr_KL_V_sigma2_i(x, NULL, df, params);
        return;
      }
 
 
 double
-KL_V_alpha_g (const gsl_vector *v_V_alpha_g)
+KL_V_alpha_g (const gsl_vector *v_V_alpha_g, Rf_params *params)
 {
   int i = *params->i;
   int d;
@@ -516,7 +515,7 @@ KL_V_alpha_g (const gsl_vector *v_V_alpha_g)
   return KL;
 }
 
-void gr_KL_V_alpha_g (const gsl_vector *v_V_alpha_g, void *null, gsl_vector *df)
+void gr_KL_V_alpha_g (const gsl_vector *v_V_alpha_g, void *null, gsl_vector *df, Rf_params *params)
 {
   int i = *params->i;
   int g = *params->g;
@@ -543,16 +542,16 @@ void gr_KL_V_alpha_g (const gsl_vector *v_V_alpha_g, void *null, gsl_vector *df)
 
  void
      alpha_g_fdf (const gsl_vector *x, 
-             void *null, double *f, gsl_vector *df)
+             void *null, double *f, gsl_vector *df, Rf_params *params)
      {
-       *f = KL_V_alpha_g(x);
-       gr_KL_V_alpha_g(x, NULL, df);
+       *f = KL_V_alpha_g(x, params);
+       gr_KL_V_alpha_g(x, NULL, df, params);
        return;
      }
 
 
 double
-KL_V_nu_g (const gsl_vector *v_V_nu_g)
+KL_V_nu_g (const gsl_vector *v_V_nu_g, Rf_params *params)
 {
   int i = *params->i;	
   int g, G = *params->G;
@@ -581,7 +580,7 @@ KL_V_nu_g (const gsl_vector *v_V_nu_g)
   return KL;
 }
 
-void gr_KL_V_nu_g (const gsl_vector *v_V_nu_g, void *null, gsl_vector *df)
+void gr_KL_V_nu_g (const gsl_vector *v_V_nu_g, void *null, gsl_vector *df, Rf_params *params)
 {
   int i = *params->i;	//, j, d = *params->d;
   int g, G = *params->G;
@@ -607,21 +606,21 @@ void gr_KL_V_nu_g (const gsl_vector *v_V_nu_g, void *null, gsl_vector *df)
 
  void
      nu_g_fdf (const gsl_vector *x, 
-             void *null, double *f, gsl_vector *df)
+             void *null, double *f, gsl_vector *df, Rf_params *params)
      {
-       *f = KL_V_nu_g(x);
-       gr_KL_V_nu_g(x, NULL, df);
+       *f = KL_V_nu_g(x, params);
+       gr_KL_V_nu_g(x, NULL, df, params);
        return;
      }
 
 
 double
-KL_V_psi2_e (const gsl_vector *v_V_psi2_e)
+KL_V_psi2_e (const gsl_vector *v_V_psi2_e, Rf_params *params)
 {
   int D = *params->D;
   params->V_psi2_e[*params->p] = gsl_vector_get(v_V_psi2_e, 0);
   double tmpsum = 0.0;
-  tmpsum = loglikefunc();
+  tmpsum = loglikefunc(params);
   double KL = tmpsum +
 	    0.5*( D * (log (params->V_psi2_e[*params->p])-log(*params->psi2)) -
 	    D * params->V_psi2_e[*params->p] / *params->psi2);
@@ -629,12 +628,12 @@ KL_V_psi2_e (const gsl_vector *v_V_psi2_e)
   return KL;
 }
 double
-KL_V_psi2_n (const gsl_vector *v_V_psi2_n)
+KL_V_psi2_n (const gsl_vector *v_V_psi2_n, Rf_params *params)
 {
   int D = *params->D;
   params->V_psi2_n[*params->p] = gsl_vector_get(v_V_psi2_n, 0);
   double tmpsum = 0.0;
-  tmpsum = loglikefunc();
+  tmpsum = loglikefunc(params);
   double KL = tmpsum +
 	    0.5*( D * (log (params->V_psi2_n[*params->p])-log(*params->psi2)) -
 	    D * params->V_psi2_n[*params->p] / *params->psi2);
@@ -642,7 +641,7 @@ KL_V_psi2_n (const gsl_vector *v_V_psi2_n)
   return KL;
 }
 
-void gr_KL_V_psi2_e (const gsl_vector *v_V_psi2_e, void * null, gsl_vector *df)
+void gr_KL_V_psi2_e (const gsl_vector *v_V_psi2_e, void * null, gsl_vector *df, Rf_params *params)
 {
   int j, i = *params->i, p=*params->p, pn;
   int D = *params->D, P_e = *params->P_e, P_n = *params->P_n;
@@ -692,7 +691,7 @@ void gr_KL_V_psi2_e (const gsl_vector *v_V_psi2_e, void * null, gsl_vector *df)
   return;
 }
 
-void gr_KL_V_psi2_n (const gsl_vector *v_V_psi2_n, void * null, gsl_vector *df)
+void gr_KL_V_psi2_n (const gsl_vector *v_V_psi2_n, void * null, gsl_vector *df, Rf_params *params)
 {
   int i, p=*params->p, j, pe;
   int D = *params->D;     
@@ -747,18 +746,18 @@ void gr_KL_V_psi2_n (const gsl_vector *v_V_psi2_n, void * null, gsl_vector *df)
 
  void
      psi2_e_fdf (const gsl_vector *x, 
-             void *null, double *f, gsl_vector *df)
+             void *null, double *f, gsl_vector *df, Rf_params *params)
      {
-       *f = KL_V_psi2_e(x);
-       gr_KL_V_psi2_e(x, NULL, df);
+       *f = KL_V_psi2_e(x, params);
+       gr_KL_V_psi2_e(x, NULL, df, params);
        return;
      }
  void
      psi2_n_fdf (const gsl_vector *x, 
-             void *null, double *f, gsl_vector *df)
+             void *null, double *f, gsl_vector *df, Rf_params *params)
      {
-       *f = KL_V_psi2_n(x);
-       gr_KL_V_psi2_n(x, NULL, df);
+       *f = KL_V_psi2_n(x, params);
+       gr_KL_V_psi2_n(x, NULL, df, params);
        return;
      }
 void KL_total (int *imodel,
@@ -801,16 +800,16 @@ void KL_total (int *imodel,
   int *NC,
   double *KL)
 { 
-  int p, i, g, d, *flag=0;
+  int p, i, g, d, flag=0;
   double tmp;
-  struct Rf_params *tmp_params;
-  tmp_params=calloc(1,sizeof(struct Rf_params));
+  Rf_params *tmp_params;
+  tmp_params=calloc(1,sizeof(Rf_params));
   tmp_params->seed=seed;
   tmp_params->p=&p;
   tmp_params->i=&i;
   tmp_params->g=&g;
   tmp_params->d=&d;
-  tmp_params->flag=flag;
+  tmp_params->flag=&flag;
   tmp_params->P_n=P_n;
   tmp_params->P_e=P_e;
   tmp_params->D=D;
@@ -848,9 +847,9 @@ void KL_total (int *imodel,
   tmp_params->inv_sigma02=inv_sigma02;
   tmp_params->NC=NC;
   tmp_params->imodel=imodel;
-  *flag=0;
+  flag=0;
   // p1
-  *KL = loglikefunc(); 
+  *KL = loglikefunc(tmp_params); 
   // p2
   for (g=0;g<*G;g++)
     for (i=0;i<*N;i++)

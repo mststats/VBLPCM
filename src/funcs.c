@@ -3,7 +3,6 @@
 #include "gsl/gsl_rng.h"
 #include "gsl/gsl_randist.h"
 #include "gsl/gsl_permutation.h"
-#include "globals.h"
 #include "headers.h"
 
 void sample_permutation(int N, int *samp, double *seed)

@@ -2,9 +2,6 @@
 #include <string.h>
 #include <math.h>
 #include <gsl/gsl_sf.h>
-#define extern
-#include "globals.h"
-#undef extern
 #include "headers.h"
 #include <R_ext/Utils.h>
 #include <R_ext/Print.h>
@@ -76,8 +73,8 @@ void Rf_VB_bbs(int *imodel,
   double tmp, tmpsum1, tmpsum2;
   double mu_nought = 0.0;
   int flag;
-  struct Rf_params *params;
-  params=calloc(1,sizeof(struct Rf_params));
+  Rf_params *params;
+  params=calloc(1,sizeof(Rf_params));
   params->flag=&flag; 
   params->MAX_ITER=max_iter;
   params->P_n=P_n;
@@ -208,7 +205,7 @@ for (l=0; l<*steps; l++) // number of cycles through the variational algorithm
       {
       params->i=&samp_nodes[i];
       lim[0]=1.0e-8; lim[1]=1.0e1;
-      bb(lim, tol);
+      bb(lim, tol, params);
       }
     d_vector[1]=diff_max(V_sigma2, old_sigma2, *N);
     } else d_vector[1] = 0.0;
@@ -281,7 +278,7 @@ for (l=0; l<*steps; l++) // number of cycles through the variational algorithm
       {        
       params->g=&samp_groups[g];
       lim[0]=1.0e-8; lim[1]=1.0e1;
-      bb(lim, tol); 
+      bb(lim, tol, params);
       }
     d_vector[5]=diff_max(V_alpha, old_alpha, *G);
     } else d_vector[5] = 0.0;
@@ -296,7 +293,7 @@ for (l=0; l<*steps; l++) // number of cycles through the variational algorithm
       {
       params->g=&samp_groups[g];
       lim[0]=1.0e-8; lim[1]=1.0e1;
-      bb(lim, tol);
+      bb(lim, tol, params);
       }
     d_vector[6]=diff_max(V_nu, old_nu, *G);
     } else d_vector[6] = 0.0;
@@ -316,7 +313,7 @@ for (l=0; l<*steps; l++) // number of cycles through the variational algorithm
         for (i=0; i<*N; i++)
           {
           params->i=&samp_nodes[i];
-          bb(lim, tol);
+          bb(lim, tol, params);
           }
 /*
 	// FLAG
@@ -350,7 +347,7 @@ for (l=0; l<*steps; l++) // number of cycles through the variational algorithm
         {
         params->p=&samp_coeffs_e[p];
         lim[0]=-1.0e2; lim[1]=1.0e2;
-        bb(lim, tol);
+        bb(lim, tol, params);
         }
       tmp=diff_max(V_xi_e, old_xi_e, *P_e);
       d_vector[7]=(tmp>d_vector[7] ? tmp : d_vector[7]);
@@ -367,7 +364,7 @@ for (l=0; l<*steps; l++) // number of cycles through the variational algorithm
         {
         params->p=&p;
         lim[0]=1.0e-8; lim[1]=1.0e1;
-        bb(lim, tol); 
+        bb(lim, tol, params); 
         }
       d_vector[8]=diff_max(V_psi2_n, old_psi2_n, *P_n);
       }
@@ -382,7 +379,7 @@ for (l=0; l<*steps; l++) // number of cycles through the variational algorithm
         {
         params->p=&samp_coeffs_e[p];
         lim[0]=1.0e-8; lim[1]=1.0e1;
-        bb(lim, tol); 
+        bb(lim, tol, params); 
         }
       tmp=diff_max(V_psi2_e, old_psi2_e, *P_e);
       d_vector[8]=(tmp>d_vector[8] ? tmp : d_vector[8]);

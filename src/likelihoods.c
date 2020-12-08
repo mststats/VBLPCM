@@ -1,8 +1,7 @@
-#include "globals.h"
 #include "headers.h"
 #include <math.h>
 
-double loglikefunc()
+double loglikefunc(Rf_params *params)
   {
   double log_like = 0.0, tmp, cov, cov2;
   int i=*params->i, j, d, p, k;

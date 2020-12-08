@@ -2,7 +2,6 @@
 #include <string.h>
 #include <math.h>
 #include <gsl/gsl_sf.h>
-#include "globals.h"
 #include "headers.h"
 #include <R_ext/Utils.h>
 #include <R_ext/Print.h>

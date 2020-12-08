@@ -1,6 +1,5 @@
 #include <math.h>
 #include <R.h>
-#include "globals.h"
 #include "headers.h"
 #define MATRIX(x,j,k) x[*D*(j)+(k)]
 
