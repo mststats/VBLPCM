@@ -41,13 +41,13 @@ void optim(Rf_params *params)
   gsl_multimin_function_fdf F;
   max_iter=params->MAX_ITER;
   gsl_vector *x;
-  int *flag = *params->flag, SIZE;
+  int SIZE;
   double *tmp, sum_tmp;
-  SIZE=(*flag==1 ? *params->D : 1);
+  SIZE=(*params->flag ==1 ? *params->D : 1);
   x = gsl_vector_alloc (SIZE);
   tmp=calloc(SIZE, sizeof(double));
   F.n = SIZE;
-  switch (*flag)
+  switch (*params->flag )
     {
     case 0: gsl_vector_set(x, 0, params->V_xi_n[*params->i+*params->N* *params->p]);
       F.f = &KL_V_xi_n;
@@ -115,7 +115,7 @@ void optim(Rf_params *params)
       status = gsl_multimin_test_gradient (s->gradient, 1.0e-4); 
   }
   while (status == GSL_CONTINUE && iter < *max_iter);
-  switch (*flag)
+  switch (*params->flag )
     {
     case 0: params->V_xi_n[*params->i+*params->N* *params->p] = gsl_vector_get (s->x, 0); 
       break;
