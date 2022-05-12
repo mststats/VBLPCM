@@ -1,3 +1,4 @@
+2022/05    mirroring on github
 2021/10    updated configure script using autoupdate
 2020/12    removed use of externs in src .c files, now passing pointers to structs
 2020/12    using useDynLib now for compatibility with new R versions
