@@ -1,3 +1,4 @@
+2023/03    fixed issue of "DLL requires the use of native symbols" by changing strings to symbols and using  .fixes="C_" in useDynLib
 2022/05    mirroring on github
 2021/10    updated configure script using autoupdate
 2020/12    removed use of externs in src .c files, now passing pointers to structs
