@@ -13,7 +13,7 @@
   packageStartupMessage('Some worked examples are given by \'example(VBLPCM)\' \n')
 } 
 
-.onUnload <- function(libpath){
-  library.dynam.unload("VBLPCM", libpath)
-  invisible()
-} 
+#.onUnload <- function(libpath){
+#  library.dynam.unload("VBLPCM", libpath)
+#  invisible()
+#} 
